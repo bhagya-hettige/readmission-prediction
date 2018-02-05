@@ -1,0 +1,31 @@
+# Load the data from the csv
+dataDirectory <- '/home/bhet0001/research/readmission/CMS/'
+claims <- read.csv(paste(dataDirectory, 'DE1_0_2008_to_2010_Inpatient_Claims_Sample_1.csv', sep = ''), header = TRUE)
+patients <- read.csv(paste(dataDirectory, 'DE1_0_2008_Beneficiary_Summary_File_Sample_1.csv', sep = ''), header = TRUE)
+
+# Format the date fields for admission and discharge
+claims$CLM_ADMSN_DT <- as.Date(as.character(claims$CLM_ADMSN_DT), format = '%Y%m%d')
+claims$NCH_BENE_DSCHRG_DT <- as.Date(as.character(claims$NCH_BENE_DSCHRG_DT), format = '%Y%m%d')
+
+# Add column - L(length of stay)
+head(as.numeric(claims$L))
+claims$L <- claims$NCH_BENE_DSCHRG_DT - claims$CLM_ADMSN_DT
+
+# Sort the claim records by the admission date
+sortedClaims <- claims[order(claims$DESYNPUF_ID, claims$CLM_ADMSN_DT),]
+
+n <- nrow(sortedClaims)
+
+# Add column - Readmitted
+head(as.logical(sortedClaims$READMITTED))
+for (row in 1:n) {
+  discharge <- sortedClaims[row, 'NCH_BENE_DSCHRG_DT']
+  
+  if (row < n & as.character(sortedClaims[row, 'DESYNPUF_ID']) == as.character(sortedClaims[row + 1, 'DESYNPUF_ID'])) {
+    readmit <- sortedClaims[row + 1, 'CLM_ADMSN_DT']
+    
+    if (discharge - readmit < 30) {
+      sortedClaims[row, 'READMITTED'] <- TRUE
+    }
+  }
+}

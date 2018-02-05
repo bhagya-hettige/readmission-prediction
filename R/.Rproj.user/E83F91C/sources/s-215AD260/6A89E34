@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1512967912474.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "6A89E34",
+    "lastKnownWriteTime" : 1512979438,
+    "last_content_update" : 1512979438593,
+    "path" : "~/research/readmission/project/SVM/main.R",
+    "project_path" : "main.R",
+    "properties" : {
+        "cursorPosition" : "15,0",
+        "scrollLine" : "2",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
